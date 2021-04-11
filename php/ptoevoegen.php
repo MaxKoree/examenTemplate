@@ -23,9 +23,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit']) && !empty($_
     $inkoopprijs = trim(strtolower($_POST['inkoopprijs']));
     $verkoopprijs = trim(strtolower($_POST['verkoopprijs']));
 
-    $result= mb_substr(uniqid(), 8, 13);
-
     $db = new database('localhost', 'root', '', 'hengelsport', 'utf8');
+
+    $sql2 = "SELECT lev_code FROM leverancier WHERE leverancier = :leverancier";
+
+    $named_placeholder2 = [
+        'leverancier'=>$leverancier2,
+    ];
+
+    $lev_code = $db->select($sql2, $named_placeholder2);
+
+    print_r($lev_code);
+
+    $result= mb_substr(uniqid(), 8, 13);
 
     $sql = "INSERT INTO artikel VALUES (:productcode, :product, :typ, :lev_code, :inkoopprijs, :verkoopprijs)";
 
@@ -33,13 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit']) && !empty($_
             'productcode'=>$result, 
             'product'=>$product,
             'typ'=>$typ,
-            'lev_code'=>$leverancier2,
+            'lev_code'=>$lev_code[0]['lev_code'],
             'inkoopprijs'=>$inkoopprijs,
             'verkoopprijs'=>$verkoopprijs,
         ];
 
         $db->insert($sql, $named_placeholder, 'ptoevoegen.php');
-    
 }
 ?>
 

@@ -42,13 +42,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit']) && !empty($_
 
     $db = new database('localhost', 'root', '', 'hengelsport', 'utf8');
 
+    
+    $sql3 = "SELECT lev_code FROM leverancier WHERE leverancier = :leverancier";
+
+    $named_placeholder2 = [
+        'leverancier'=>$leverancier2,
+    ];
+
+    $lev_code = $db->select($sql3, $named_placeholder2);
+
+
     $sql = "UPDATE artikel SET productcode=:productcode, product=:product, typ=:typ, lev_code=:lev_code, inkoopprijs=:inkoopprijs, verkooprijs=:verkooprijs WHERE product =:product2;";
 
         $named_placeholder = [
             'productcode'=>$result, 
             'product'=>$product,
             'typ'=>$typ,
-            'lev_code'=>$leverancier2,
+            'lev_code'=>$lev_code,
             'inkoopprijs'=>$inkoopprijs,
             'verkooprijs'=>$verkoopprijs,
             'product2'=>$product2,

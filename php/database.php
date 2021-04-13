@@ -122,6 +122,24 @@ class database
             $stmt->execute($placeholder);
             header("location: $location");
         }
+        
+        public function getActiviteit($naam)
+        {
+            $array = [];
+            $sql = "SELECT a.productcode, l.leverancier, l.telefoon
+            FROM artikel AS a
+            INNER JOIN leverancier AS l
+            ON a.lev_code = l.lev_code
+             WHERE l.telefoon = :telefoon";
+    
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute(['telefoon' => $naam]);
+    
+            while ($result = $stmt->fetch()) {
+                array_push($array, $result[0][0][0]);
+            }
+            return $array;
+        }
 }  
         
 ?>

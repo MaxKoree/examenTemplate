@@ -24,3 +24,5 @@ while ($row = $result->fetch_assoc())
 
 $table .= "</table";
 print $table;
+
+// source: https://stackoverflow.com/questions/50254770/how-to-echo-inner-join-in-php
